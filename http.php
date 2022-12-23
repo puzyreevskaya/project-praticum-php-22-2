@@ -3,13 +3,15 @@
 use Dotenv\Dotenv;
 use Psr\Log\LoggerInterface;
 use tgu\puzyrevskaya\Blog\Http\Actions\Comments\CreateComment;
-use tgu\puzyrevskaya\Blog\Http\Actions\Posts\DeletePost;
+use tgu\puzyrevskaya\Blog\Http\Actions\Likes\CreateLikes;
+use tgu\puzyrevskaya\Blog\Http\Actions\Posts\CreatePost;
 use tgu\puzyrevskaya\Blog\Http\Actions\Users\CreateUser;
 use tgu\puzyrevskaya\Blog\Http\Actions\Users\FindByUsername;
 use tgu\puzyrevskaya\Blog\Http\ErrorResponse;
 use tgu\puzyrevskaya\Blog\Http\Request;
-use tgu\puzyrevskaya\Blog\Repositories\CommentsRepository\SqliteCommentsRepository;
+use tgu\puzyrevskaya\Blog\Http\Actions\Auth\Login;
 use tgu\puzyrevskaya\Exceptions\HttpException;
+
 
 require_once __DIR__ .'/vendor/autoload.php';
 
@@ -40,7 +42,11 @@ $routes =[
     'GET'=>['/users/show'=>FindByUsername::class,
     ],
     'POST'=>[
+        '/login'=> Login::class,
         '/users/create'=>CreateUser::class,
+        '/posts/create'=> CreatePost::class,
+        '/comment/create'=> CreateComment::class,
+        '/like/create'=> CreateLikes::class,
     ],
 ];
 

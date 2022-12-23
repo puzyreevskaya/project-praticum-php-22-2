@@ -19,7 +19,7 @@ class SqliteCommentsRepository implements CommentsRepositoryInterface
     public function saveComment(Comments $comment):void{
         $this->logger->info('Save comment ');
         $statement = $this->connection->prepare(
-            "INSERT INTO comments (uuid_comment, uuid_post, uuid_author, textCom) VALUES (:uuid_comment, :uuid_post, :uuid_author, :textCom)");
+            "INSERT INTO comments (uuid_comment, uuid_post, uuid_author, textCom) VALUES (:uuid_comment,:uuid_post,:uuid_author, :textCom)");
         $statement->execute([
             ':uuid_comment'=>(string)$comment->getUuidComment(),
             ':uuid_post'=>$comment->getUuidPost(),
@@ -39,6 +39,9 @@ class SqliteCommentsRepository implements CommentsRepositoryInterface
     }
 
 
+    /**
+     * @throws CommentNotFoundException
+     */
     public function getByUuidComment(UUID $uuid_comment): Comments
     {
         $statement = $this->connection->prepare(
@@ -48,6 +51,9 @@ class SqliteCommentsRepository implements CommentsRepositoryInterface
     }
 
 
+    /**
+     * @throws CommentNotFoundException
+     */
     public function getTextComment(string $textCom):Comments
     {
         $statement = $this->connection->prepare("SELECT * FROM comments WHERE textCom = :textCom");

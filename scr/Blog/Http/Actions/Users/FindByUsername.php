@@ -2,21 +2,24 @@
 
 namespace tgu\puzyrevskaya\Blog\Http\Actions\Users;
 
-use tgu\puzyrevskaya\Blog\Http\Actions\ActionInterface;
+use tgu\puzyrevskaya\Blog\Http\Auth\AuthenticationInterface;
 use tgu\puzyrevskaya\Blog\Http\ErrorResponse;
 use tgu\puzyrevskaya\Blog\Http\Request;
 use tgu\puzyrevskaya\Blog\Http\Response;
 use tgu\puzyrevskaya\Blog\Http\SuccessResponse;
+use tgu\puzyrevskaya\Blog\Post;
 use tgu\puzyrevskaya\Blog\Repositories\UserRepository\UsersRepositoryInterface;
+use tgu\puzyrevskaya\Blog\User;
 use tgu\puzyrevskaya\Exceptions\HttpException;
 use tgu\puzyrevskaya\Exceptions\UserNotFoundException;
 
-class FindByUsername implements ActionInterface
+class FindByUsername implements AuthenticationInterface
 {
     public function __construct(
         private UsersRepositoryInterface $usersRepository
     )
     {
+        
     }
 
     public function handle(Request $request): Response
@@ -29,5 +32,15 @@ class FindByUsername implements ActionInterface
             return new ErrorResponse($exception->getMessage());
         }
         return new SuccessResponse(['username'=>$user->getUserName(),'name'=>$user->getName()->getFirstName().' '.$user->getName()->getLastName()]);
+    }
+
+    public function user(Request $request): User
+    {
+        // TODO: Implement user() method.
+    }
+
+    public function post(Request $request): Post
+    {
+        // TODO: Implement post() method.
     }
 }

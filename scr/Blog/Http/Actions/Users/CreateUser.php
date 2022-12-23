@@ -9,8 +9,8 @@ use tgu\puzyrevskaya\Blog\Http\Response;
 use tgu\puzyrevskaya\Blog\Http\SuccessResponse;
 use tgu\puzyrevskaya\Blog\Repositories\UserRepository\UsersRepositoryInterface;
 use tgu\puzyrevskaya\Blog\User;
-use tgu\puzyrevskaya\Blog\UUID;
 use tgu\puzyrevskaya\Exceptions\HttpException;
+use tgu\puzyrevskaya\Person\Name;
 
 class CreateUser implements ActionInterface
 {
@@ -18,19 +18,28 @@ class CreateUser implements ActionInterface
         private UsersRepositoryInterface $usersRepository
     )
     {
+        
     }
 
     public function handle(Request $request): Response
     {
         try {
-            $newUserUuid = UUID::random();
-            $user = new User($newUserUuid,new Name($request->jsonBodyFind('first_name'), $request->jsonBodyFind('last_name')), $request->jsonBodyFind('username'));
+                $user= User::createFrom(
+                $request->jsonBodyField('username'),
+                $request->jsonBodyField('password'),
+                new Name(
+                    $request->jsonBodyField('first_name'),
+                    $request->jsonBodyField('last_name')
+                )
+            );
+
         }
         catch (HttpException $exception){
             return new ErrorResponse($exception->getMessage());
         }
         $this->usersRepository->save($user);
-        return new SuccessResponse(['uuid'=>(string)$newUserUuid]);
+        return new SuccessResponse(['uuid'=>(string)$user->getUuid(),
+            ]);
     }
 
 }

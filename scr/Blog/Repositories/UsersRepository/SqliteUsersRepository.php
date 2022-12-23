@@ -20,12 +20,14 @@ class SqliteUsersRepository implements UsersRepositoryInterface
     public function save(User $user):void{
         $this->logger->info('Save user ');
         $statement = $this->connection->prepare(
-            "INSERT INTO users (uuid, first_name, last_name, username) VALUES (:uuid, :first_name,:last_name, :username)");
+            "INSERT INTO users (uuid, first_name, last_name, username, password) VALUES (:uuid,    :first_name,:last_name, :username, :password)");
         $statement->execute([
             ':uuid'=>(string)$user->getUuid(),
             ':first_name'=>$user->getName()->getFirstName(),
             ':last_name'=>$user->getName()->getLastName(),
-            ':username'=>$user->getUserName()]);
+            ':username'=>$user->getUserName(),
+            ':password'=>$user->gethashPassword(),
+        ]);
         $this->logger->info("'Save user: $user" );
     }
 
@@ -36,7 +38,7 @@ class SqliteUsersRepository implements UsersRepositoryInterface
             $this->logger->warning("Cannot get user: $value");
             throw new UserNotFoundException("Cannot get user: $value");
         }
-        return new User(new UUID($result['uuid']), new Name($result['first_name'], $result['last_name']), $result['username']);
+        return new User(new UUID($result['uuid']), new Name($result['first_name'], $result['last_name']), $result['username'],$result['password'] );
     }
 
 

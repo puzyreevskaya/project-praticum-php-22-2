@@ -31,6 +31,11 @@ class CreatePostActionTest extends TestCase
             {
                 throw new PostNotFoundException('Not found');
             }
+            
+            public function getTextPost(string $text): Post
+            {
+                // TODO: Implement getTextPost() method.
+            }
         };
     }
 

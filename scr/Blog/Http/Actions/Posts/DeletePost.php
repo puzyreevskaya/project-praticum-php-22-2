@@ -3,6 +3,7 @@
 namespace tgu\puzyrevskaya\Blog\Http\Actions\Posts;
 
 use tgu\puzyrevskaya\Blog\Http\Actions\ActionInterface;
+use tgu\puzyrevskaya\Blog\Http\Auth\AuthenticationInterface;
 use tgu\puzyrevskaya\Blog\Http\ErrorResponse;
 use tgu\puzyrevskaya\Blog\Http\Request;
 use tgu\puzyrevskaya\Blog\Http\Response;
