@@ -4,15 +4,22 @@ namespace tgu\puzyrevskaya\Person;
 
 class Person
 {
-    public $id;
-    public $name;
-    public $lastname;
-
-    public function __construct($id, $name, $lastname)
+    public function __construct(private Name $name, private DateTimeImmutable $registeredOn)
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->lastname = $lastname;
+
+    }
+
+    public function __toString(): string
+    {
+      return $this->name . ' на сайте с ' . $this->registeredOn->format('Y-m-d');
+    }
+
+    public function getName(): Name{
+        return $this->name;
+    }
+
+    public function getUserName(): Name{
+        return $this->userName;
     }
 }
 

@@ -1,28 +1,30 @@
 <?php
-class Product {
-    public $name;
-    public $price;
-    public $descrition;
+require_once __DIR__ . '/vendor/autoload.php';
 
-    public function __construct($name, $price, $descrition)
-    {
-        $this->name = $name;
-        $this->price = $price;
-        $this->descrition = $descrition;
-    }
-    public function Edit()
-    {
-        return;
-    }
-}
+// class Product {
+//     public $name;
+//     public $price;
+//     public $descrition;
 
-class EdibleProduct extends Product{
+//     public function __construct($name, $price, $descrition)
+//     {
+//         $this->name = $name;
+//         $this->price = $price;
+//         $this->descrition = $descrition;
+//     }
+//     public function Edit()
+//     {
+//         return;
+//     }
+// }
 
-    public $ingredients;
+// class EdibleProduct extends Product{
 
-    public function CheckExpireDate()
-    {
-        return;
-    }
-}
-?>
+//     public $ingredients;
+
+//     public function CheckExpireDate()
+//     {
+//         return;
+//     }
+// }
+// ?>
