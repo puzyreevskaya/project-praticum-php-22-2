@@ -11,3 +11,7 @@ Content-Type: application/json
   "uuid_post": "b0b10650-eb52-43a8-5a1c-cf167beed5d0",
   "textCom":"Good"
 }
+
+###
+GET http://127.0.0.1:8000/users/show?username=admin
+Accept: application/json

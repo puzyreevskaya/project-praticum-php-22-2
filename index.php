@@ -1,30 +1,14 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-// class Product {
-//     public $name;
-//     public $price;
-//     public $descrition;
+function someFunction(bool $one, int $two=42,):string
+{
+    return $one . $two;
+}
 
-//     public function __construct($name, $price, $descrition)
-//     {
-//         $this->name = $name;
-//         $this->price = $price;
-//         $this->descrition = $descrition;
-//     }
-//     public function Edit()
-//     {
-//         return;
-//     }
-// }
-
-// class EdibleProduct extends Product{
-
-//     public $ingredients;
-
-//     public function CheckExpireDate()
-//     {
-//         return;
-//     }
-// }
-// ?>
+$reflection = new ReflectionFunction('someFunction');
+echo $reflection->getReturnType()->getName()."\n";
+foreach ($reflection->getParameters() as $parameter){
+    echo $parameter->getName().'['.$parameter->getType()->getName()."]\n";
+}
+?>
