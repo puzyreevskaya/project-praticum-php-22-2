@@ -4,20 +4,28 @@ namespace tgu\puzyrevskaya\Blog\Repositories\PostRepositories;
 
 use PDO;
 use PDOStatement;
+use Psr\Log\LoggerInterface;
 use tgu\puzyrevskaya\Blog\Post;
 use tgu\puzyrevskaya\Blog\UUID;
 use tgu\puzyrevskaya\Exceptions\PostNotFoundException;
 
 class SqlitePostsRepository implements PostsRepositoryInterface
 {
+    public function __construct(private PDO $connection, private LoggerInterface $logger,)
+    {
+
+    }
+
     public function savePost(Post $post):void{
+        $this->logger->info('Save post ');
         $statement = $this->connection->prepare(
-            "INSERT INTO post (uuid_post, uuid_author, title, text) VALUES (:uuid_post,    :uuid_author,:title, :text)");
+            "INSERT INTO post (uuid_post, uuid_author, title, text) VALUES (:uuid_post, :uuid_author,:title, :text)");
         $statement->execute([
             ':uuid_post'=>(string)$post->getUuidPost(),
             ':uuid_author'=>$post->getUuidUser(),
             ':title'=>$post->getTitle(),
             ':text'=>$post->getTextPost()]);
+        $this->logger->info("'Save post: $post" );
     }
 
     /**
@@ -26,6 +34,7 @@ class SqlitePostsRepository implements PostsRepositoryInterface
     private function getPost(PDOStatement $statement, string $value):Post{
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         if($result===false){
+            $this->logger->warning("Cannot get post: $value");
             throw new PostNotFoundException("Cannot get post: $value");
         }
         return new Post(new UUID($result['uuid_post']), $result['uuid_author'], $result['title'], $result['text']);

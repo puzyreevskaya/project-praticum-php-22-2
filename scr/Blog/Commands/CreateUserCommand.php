@@ -2,6 +2,7 @@
 
 namespace tgu\puzyrevskaya\Blog\Commands;
 
+use Psr\Log\LoggerInterface;
 use tgu\puzyrevskaya\Blog\Repositories\UserRepository\UsersRepositoryInterface;
 use tgu\puzyrevskaya\Blog\User;
 use tgu\puzyrevskaya\Blog\UUID;
@@ -11,12 +12,23 @@ use tgu\puzyrevskaya\Person\Name;
 
 class CreateUserCommand
 {
+    public function __construct(private UsersRepositoryInterface $usersRepository,
+    private LoggerInterface $logger,)
+    {
+    }
+
     public function handle(Arguments $arguments):void{
+        $this->logger->info('Create command started');
         $username = $arguments->get('username');
         if($this->userExist($username)){
-            throw new CommandException("User already exists: $username");
+            $this->logger->warning("User already exists: $username");
         }
-        $this->usersRepository->save(new User(UUID::random(), new Name($arguments->get('first_name'), $arguments->get('last_name')),$username));
+        $uuid= UUID::random();
+        $this->usersRepository->save(
+            new User($uuid,
+            new Name($arguments->get('first_name'), $arguments->get('last_name')),$username));
+
+        $this->logger->info("User created: $uuid" );
     }
     public function userExist(string $username):bool{
         try{

@@ -11,6 +11,7 @@ use tgu\puzyrevskaya\Blog\UUID;
 use tgu\puzyrevskaya\Exceptions\InvalidArgumentExceptions;
 use tgu\puzyrevskaya\Exceptions\UserNotFoundException;
 use tgu\puzyrevskaya\Person\Name;
+use tgu\puzyrevskaya\PhpUnit\Blog\DummyLogger;
 
 class SqliteUsersRepositoryTest extends TestCase
 {
@@ -22,7 +23,7 @@ class SqliteUsersRepositoryTest extends TestCase
      $statementStub->method('fetch')->willReturn(false);
      $connectionStub->method('prepare')->willReturn($statementStub);
 
-     $repository = new SqliteUsersRepository($connectionStub);
+     $repository = new SqliteUsersRepository($connectionStub, new DummyLogger());
 
      $this->expectException(UserNotFoundException::class);
      $this->expectExceptionMessage('Cannot get user: admin');
@@ -46,7 +47,7 @@ class SqliteUsersRepositoryTest extends TestCase
             ]);
           $connectionStub->method('prepare')->willReturn($statementStub);
 
-        $repository = new SqliteUsersRepository($connectionStub);
+        $repository = new SqliteUsersRepository($connectionStub, new DummyLogger());
 
         $repository->save(new User(
             new UUID('d34cd6a4-44a5-3d65-52bb-e3efcb390a0c'),

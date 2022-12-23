@@ -1,20 +1,22 @@
 <?php
 
+use Psr\Log\LoggerInterface;
 use tgu\puzyrevskaya\Blog\Commands\Arguments;
 use tgu\puzyrevskaya\Blog\Commands\CreateUserCommand;
-use tgu\puzyrevskaya\Blog\Comments;
-use tgu\puzyrevskaya\Blog\Post;
-use tgu\puzyrevskaya\Blog\Repositories\PostRepositories\SqlitePostsRepository;
-use tgu\puzyrevskaya\Blog\UUID;
-use tgu\puzyrevskaya\Blog\Repositories\UserRepository\SqliteUsersRepository;
-use tgu\puzyrevskaya\Blog\User;
 use tgu\puzyrevskaya\Exceptions\Argumentsexception;
 use tgu\puzyrevskaya\Exceptions\CommandException;
 
 $conteiner = require __DIR__ .'/bootstrap.php';
+
+
 $command = $conteiner->get(CreateUserCommand::class);
+
+$logger= $conteiner-> get(LoggerInterface::class);
 try{$command->handle(Arguments::fromArgv($argv));}
-catch (Argumentsexception|CommandException $exception){echo $exception->getMessage();}
+catch (Argumentsexception|CommandException $exception){
+    $logger->error($exception->getMessage(),['exception'=>$exception]);
+}
+
 
 // $userRepository = new SqliteUsersRepository($connection);
 // $userRepository->save(new User(\tgu\puzyrevskaya\Blog\UUID::random(), new \tgu\puzyrevskaya\Person\Name('Eugene', 'Tikko'),'admin'));

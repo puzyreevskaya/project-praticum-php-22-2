@@ -9,6 +9,7 @@ use tgu\puzyrevskaya\Blog\Post;
 use tgu\puzyrevskaya\Blog\Repositories\PostRepositories\SqlitePostsRepository;
 use tgu\puzyrevskaya\Blog\UUID;
 use tgu\puzyrevskaya\Exceptions\PostNotFoundException;
+use tgu\puzyrevskaya\PhpUnit\Blog\DummyLogger;
 
 class SqlitePostsRepositoryTest extends TestCase
 {
@@ -43,7 +44,7 @@ class SqlitePostsRepositoryTest extends TestCase
                 ':text'=>'Good']);
         $connectionStub->method('prepare')->willReturn($statementStub);
 
-        $repository = new SqlitePostsRepository($connectionStub);
+        $repository = new SqlitePostsRepository($connectionStub, new DummyLogger());
 
         $repository->savePost(new Post(
             new UUID('78a815b7-a3ed-a629-e845-920c0f5a034e'), 'cf6cdc15-b2f8-154d-7597-648a8294b64d','Title1','Good'
@@ -58,7 +59,7 @@ class SqlitePostsRepositoryTest extends TestCase
         $statementStub->method('fetch')->willReturn(false);
         $connectionStub->method('prepare')->willReturn($statementStub);
 
-        $repository = new SqlitePostsRepository($connectionStub);
+        $repository = new SqlitePostsRepository($connectionStub, new DummyLogger());
 
         $this->expectException(PostNotFoundException::class);
 

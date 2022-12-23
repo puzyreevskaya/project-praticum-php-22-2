@@ -22,6 +22,11 @@ class User
         $lastname = $this->name->getLastName();
         return "Имя: $firstname $lastname логин $this->username ".PHP_EOL;
     }
+
+    public function getUuid():UUID{
+        return $this->uuid;
+    }
+    
     public function getId(): int{
         return $this->id;
     }
